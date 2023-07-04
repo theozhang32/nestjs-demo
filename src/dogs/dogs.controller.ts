@@ -6,6 +6,8 @@ import {
   Param,
   Post,
   Put,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { CreateDogDto } from './dto/create-dogs.dto';
 import { UpdateDogDto } from './dto/update-dogs.dto';
@@ -25,7 +27,14 @@ export class DogsController {
 
   @Get()
   findAll() {
-    return 'This action returns all dogs';
+    // return 'This action returns all dogs';
+    throw new HttpException(
+      {
+        code: 1,
+        msg: 'This is a custom message',
+      },
+      HttpStatus.FORBIDDEN,
+    );
   }
   // async findAll() {
   //   return this.dogsService.findAll();
