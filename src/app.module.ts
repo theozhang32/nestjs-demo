@@ -6,19 +6,25 @@ import {
 } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CatsModule } from './cats/cats.module';
-import { DogsModule } from './dogs/dogs.module';
-import { LoggerMiddleware } from './logger.middleware';
+import { TodoModule } from './todo/todo.module';
+import { LoggerMiddleware } from './common/middleware';
+// import { APP_FILTER } from '@nestjs/core';
+// import { HttpExceptionFilter } from './common/filter';
+// import { DatabaseModule } from './database.module'
 
 @Module({
-  imports: [CatsModule, DogsModule],
+  imports: [TodoModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    // {
+    //   provide: APP_FILTER,
+    //   useClass: HttpExceptionFilter,
+    // },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(LoggerMiddleware)
-      .forRoutes({ path: 'dogs', method: RequestMethod.GET });
+    consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }
